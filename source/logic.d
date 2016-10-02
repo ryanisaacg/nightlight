@@ -7,10 +7,9 @@ void tick(State state) {
 		Entity *entity = &(state.entities[i]);
 		Rect result;
 		Vector2 speed;
-		state.tiles.move(entity.bounds, entity.speed, result, speed);
+		state.tiles.slide(entity.bounds, entity.speed, result, speed);
 		entity.bounds = result;
 		entity.speed = speed;
-		writeln(result);
 		//entity.bounds = entity.bounds.move(entity.speed);
 	}
 }

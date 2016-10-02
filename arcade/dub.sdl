@@ -1,6 +1,0 @@
-name "arcade-physics"
-description "An arcade physics library"
-authors	"Ryan Goldstein"
-copyright "Copyright © 2016, Ryan Goldstein"
-license "MIT"
-targetType "library"

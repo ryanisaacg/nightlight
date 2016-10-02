@@ -1,0 +1,6 @@
+name "nightlight"
+description "A game about the monsters in the closet"
+copyright "Copyright © 2016, Ryan Goldste"
+authors "Ryan Goldstein"
+dependency "arcade-physics" path="./arcade"
+dependency "derelict-sdl2" version="~>2.0.0"

@@ -1,13 +1,20 @@
 import arcade.geom;
+import arcade.tilemap;
+import derelict.sdl2.sdl;
+
+alias Tiles = Tilemap!(SDL_Texture*, 640, 480, 32);
 
 struct Entity {
 	Rect bounds;
 	Vector2 speed;
+	SDL_Texture *texture = null;
+	int health = 1;
 }
 
 struct State {
 	Entity[] entities;
 	int amount = 0;
+	Tiles tiles;
 	
 	this(int length) {
 		entities.length = length;
@@ -26,13 +33,5 @@ struct State {
 	void remove(int i) {
 		entities[i] = entities[amount - 1];
 		amount -= 1;
-	}
-	
-	template map(alias func) {
-		void map() {
-			for(int i = 0; i < amount; i++) {
-				func(entities, i);
-			}
-		}
 	}
 }

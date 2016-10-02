@@ -29,9 +29,14 @@ void main() {
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	sdl_check(renderer == null);
     
-    auto draw = Renderer(load(renderer, "img/block.bmp"), renderer);
+    SDL_Texture *block = load(renderer, "img/block.bmp");
+    SDL_Texture *player = load(renderer, "img/player.bmp");
+    
+    auto draw = Renderer(renderer);
     State state = State(10);
-    state.add(Entity(Rect(0, 0, 32, 32), Vector2(1, 1)));
+    state.tiles = new Tiles();
+    state.tiles.put(block, Vector2(100, 100));
+    state.add(Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player));
     
     bool loop = true;
     

@@ -1,7 +1,7 @@
 import entity;
 
 void tick(State *state) {
-	foreach(e; state.entities) {
-		e.bounds.x += 1;
+	foreach(ref entity; state.entities) {
+		entity.bounds = entity.bounds.move(entity.speed);
 	}
 }

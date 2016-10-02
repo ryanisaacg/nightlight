@@ -4,6 +4,7 @@ import derelict.sdl2.sdl;
 
 alias Tiles = Tilemap!(SDL_Texture*, 640, 480, 32);
 
+
 struct Entity {
 	Rect bounds;
 	Vector2 speed;
@@ -12,6 +13,7 @@ struct Entity {
 }
 
 struct State {
+	Entity player;
 	Entity[] entities;
 	int amount = 0;
 	Tiles tiles;

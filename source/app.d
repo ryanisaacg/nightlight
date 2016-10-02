@@ -30,9 +30,8 @@ void main() {
 	sdl_check(renderer == null);
     
     auto draw = Renderer(load(renderer, "img/block.bmp"), renderer);
-    State state;
-    state.entities.length = 1;
-    state.entities[0] = Entity(Rect(0, 0, 32, 32), Vector2(1, 1));
+    State state = State(10);
+    state.add(Entity(Rect(0, 0, 32, 32), Vector2(1, 1)));
     
     bool loop = true;
     
@@ -47,9 +46,9 @@ void main() {
 				continue;
 			}
 		}
-		tick(&state);
+		tick(state);
 		SDL_RenderClear(renderer);
-		draw.draw(&state);
+		draw.draw(state);
 		SDL_RenderPresent(renderer);
 		SDL_Delay(16);
 	}

@@ -6,7 +6,7 @@ struct Renderer {
 	SDL_Texture *texture;
 	SDL_Renderer *renderer;
 	
-	void draw(State *state) {
+	void draw(State state) {
 		foreach(entity; state.entities) {
 			SDL_Rect target = convert(entity.bounds);
 			SDL_RenderCopy(renderer, texture, null, &target);

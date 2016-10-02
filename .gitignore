@@ -8,3 +8,4 @@ nightlight
 *.selections.json
 *.a
 *.dll
+*.lib

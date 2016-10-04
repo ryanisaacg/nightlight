@@ -39,7 +39,6 @@ struct Window {
 				open = false;
 				break;
 			case SDL_KEYDOWN:
-				writeln(e.key.keysym.scancode);
 				keys[e.key.keysym.scancode] = true;
 				break;
 			case SDL_KEYUP:

@@ -9,6 +9,11 @@ import io;
 
 void main() {
 	auto gfx_cfg = Ini.Parse("config/graphics.ini");
+	auto game_cfg = Ini.Parse("config/gameplay.ini");
+	GameConfig config = GameConfig(to!float(game_cfg["controls"].getKey("friction")), 
+		to!float(game_cfg["controls"].getKey("accel")), 
+		to!float(game_cfg["controls"].getKey("top_speed")), 
+		to!float(game_cfg["controls"].getKey("min_speed")));
 	auto window_cfg = gfx_cfg["window"]; 
     auto window = Window(window_cfg.getKey("title"), to!int(window_cfg.getKey("width")), 
 		to!int(window_cfg.getKey("height")));
@@ -24,7 +29,7 @@ void main() {
     int frame_delay = 1000 / to!int(gfx_cfg["perf"].getKey("fps"));
     while(window.stayOpen) {
 		window.checkEvents();
-		tick(state, window.keys);
+		tick(state, window.keys, config);
 		window.draw(state);
 		SDL_Delay(frame_delay);
 	}

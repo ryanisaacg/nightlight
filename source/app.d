@@ -20,7 +20,7 @@ void main() {
     
     while(window.stayOpen) {
 		window.checkEvents();
-		tick(state);
+		tick(state, window.keys);
 		window.draw(state);
 		SDL_Delay(16);
 	}

@@ -11,6 +11,7 @@ struct Window {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	bool open = true;
+	bool[SDL_Scancode] keys;
 	
 	this(string title) {
 		DerelictSDL2.load();
@@ -37,18 +38,28 @@ struct Window {
 			case SDL_QUIT:
 				open = false;
 				break;
+			case SDL_KEYDOWN:
+				writeln(e.key.keysym.scancode);
+				keys[e.key.keysym.scancode] = true;
+				break;
+			case SDL_KEYUP:
+				keys.remove(e.key.keysym.scancode);
+				break;
 			default:
 				continue;
 			}
 		}
 	}
 	
+	void draw_entity(Entity entity) {
+		SDL_Rect target = convert(entity.bounds);
+			SDL_RenderCopy(renderer, entity.texture, null, &target);
+	}
+	
 	void draw(State state) {
 		SDL_RenderClear(renderer);
-		foreach(entity; state.entities) {
-			SDL_Rect target = convert(entity.bounds);
-			SDL_RenderCopy(renderer, entity.texture, null, &target);
-		}
+		foreach(entity; state.entities) draw_entity(entity);
+		draw_entity(state.player);
 		for(int x = 0; x < state.tiles.width; x += 32) {
 			for(int y = 0; y < state.tiles.height; y += 32) {
 				auto tex = state.tiles.get(Vector2(x, y));

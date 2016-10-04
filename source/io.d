@@ -7,17 +7,17 @@ import std.string;
 import entity;
 
 
-const int WIDTH = 640, HEIGHT = 480;
-
 struct Window {
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	SDL_Texture *effect_target;
-	
+	int WIDTH, HEIGHT;
 	bool open = true;
 	bool[SDL_Scancode] keys;
 	
-	this(string title) {
+	this(string title, int width, int height) {
+		WIDTH = width;
+		HEIGHT = height;
 		DerelictSDL2.load();
 		sdl_check(SDL_Init(SDL_INIT_VIDEO) < 0, "SDL Initialization");
 		window = SDL_CreateWindow(title.toStringz(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_SHOWN);

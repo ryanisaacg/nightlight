@@ -57,28 +57,29 @@ struct Window {
 		}
 	}
 	
+	private void draw_rect(int x, int y, int width, int height, SDL_Color color) {
+		SDL_Rect rect = SDL_Rect(x, y, width, height);
+		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
+		SDL_RenderFillRect(renderer, &rect);
+	}
+	
 	///Draw the lighting overlay on the game
 	private void lighting_overlay(Entity highlight) {
 		//Set up render state
 		SDL_SetRenderTarget(renderer, effect_target);
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_NONE);
 		//Render the blackened area
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 128);
-		SDL_Rect screen = SDL_Rect(0, 0, WIDTH, HEIGHT);
-		SDL_RenderFillRect(renderer, &screen);
+		draw_rect(0, 0, WIDTH, HEIGHT, SDL_Color(0, 0, 0, 230));
 		//Render the highlighted area
 		//TODO: Render in circle
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-		SDL_Rect highlighted_rect = convert(highlight.bounds);
-		highlighted_rect.x -= 30;
-		highlighted_rect.y -= 30;
-		highlighted_rect.w += 60;
-		highlighted_rect.h += 60;
-		SDL_RenderFillRect(renderer, &highlighted_rect);
+		SDL_Rect bounds = convert(highlight.bounds);
+		draw_rect(bounds.x - 90, bounds.y - 90, bounds.w + 180, bounds.h + 180, SDL_Color(0, 0, 0, 200));
+		draw_rect(bounds.x - 60, bounds.y - 60, bounds.w + 120, bounds.h + 120, SDL_Color(0, 0, 0, 128));
+		draw_rect(bounds.x - 30, bounds.y - 30, bounds.w + 60, bounds.h + 60, SDL_Color(0, 0, 0, 0));
 		//Draw the effect target over the screen
 		SDL_SetRenderTarget(renderer, null);
 		SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
-		SDL_RenderCopy(renderer, effect_target, null, &screen);
+		SDL_RenderCopy(renderer, effect_target, null, null);
 	}
 		
 	///Draw an entity

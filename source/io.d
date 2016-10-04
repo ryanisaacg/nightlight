@@ -34,10 +34,12 @@ struct Window {
 		SDL_Quit();
 	}
 	
+	///Checks if the window should remain open
 	bool stayOpen() {
 		return open;
 	}
 	
+	///Check all the events in the event queue
 	void checkEvents() {
 		SDL_Event e;
 		while(SDL_PollEvent(&e)) {
@@ -57,6 +59,7 @@ struct Window {
 		}
 	}
 	
+	///Draw a colored rectangle
 	private void draw_rect(int x, int y, int width, int height, SDL_Color color) {
 		SDL_Rect rect = SDL_Rect(x, y, width, height);
 		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
@@ -84,15 +87,20 @@ struct Window {
 		
 	///Draw an entity
 	private void draw_entity(Entity entity) {
+		//Get the entity bounds converted to an SDL_Rect
 		SDL_Rect target = convert(entity.bounds);
+		//Draw the entity's texture
 		SDL_RenderCopy(renderer, entity.texture, null, &target);
 	}
 	
 	///Draw the entire state
 	void draw(State state) {
+		//Draw the window background
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
+		//Draw the entities
 		foreach(entity; state.entities) draw_entity(entity);
+		//Draw the tiles
 		for(int x = 0; x < state.tiles.width; x += 32) {
 			for(int y = 0; y < state.tiles.height; y += 32) {
 				auto tex = state.tiles.get(Vector2(x, y));
@@ -102,7 +110,9 @@ struct Window {
 				}
 			}
 		}
+		//Draw the lighting
 		lighting_overlay(state.entities[0]);
+		//Finish drawing
 		SDL_RenderPresent(renderer);
 	}
 	
@@ -111,10 +121,13 @@ struct Window {
 	}
 	
 	SDL_Texture *load(string path) {
+		//Load surface from a file
 		SDL_Surface *surface = SDL_LoadBMP(path.toStringz());
 		sdl_check(surface == null, "Loading BMP file " ~ path);
+		//Load texutre from surface
 		SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 		sdl_check(texture == null, "Creating texture");
+		//Clean up surface
 		SDL_FreeSurface(surface);
 		return texture;
 	}

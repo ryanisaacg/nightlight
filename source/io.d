@@ -56,6 +56,7 @@ struct Window {
 	}
 	
 	void draw(State state) {
+		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
 		foreach(entity; state.entities) draw_entity(entity);
 		for(int x = 0; x < state.tiles.width; x += 32) {

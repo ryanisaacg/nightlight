@@ -6,7 +6,7 @@ import std.stdio;
 import entity;
 
 struct GameConfig {
-	float friction, accel, top_speed, min_speed;
+	float friction, accel, top_speed, min_speed, gravity;
 }
 
 void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
@@ -21,7 +21,7 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
 		state.tiles.slide(entity.bounds, entity.speed, result, speed);
 		entity.bounds = result;
 		entity.speed = speed;
-		entity.speed.y += 0.25f;
+		entity.speed.y += config.gravity;
 	}
 	//Apply controls
 	Entity *player = &(state.entities[0]);

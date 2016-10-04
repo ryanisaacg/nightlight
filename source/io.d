@@ -52,13 +52,12 @@ struct Window {
 	
 	void draw_entity(Entity entity) {
 		SDL_Rect target = convert(entity.bounds);
-			SDL_RenderCopy(renderer, entity.texture, null, &target);
+		SDL_RenderCopy(renderer, entity.texture, null, &target);
 	}
 	
 	void draw(State state) {
 		SDL_RenderClear(renderer);
 		foreach(entity; state.entities) draw_entity(entity);
-		draw_entity(state.player);
 		for(int x = 0; x < state.tiles.width; x += 32) {
 			for(int y = 0; y < state.tiles.height; y += 32) {
 				auto tex = state.tiles.get(Vector2(x, y));

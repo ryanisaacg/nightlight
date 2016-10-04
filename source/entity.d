@@ -13,13 +13,13 @@ struct Entity {
 }
 
 struct State {
-	Entity player;
 	Entity[] entities;
 	int amount = 0;
 	Tiles tiles;
 	
-	this(int length) {
+	this(int length, Entity player) {
 		entities.length = length;
+		add(player);
 	}
 	
 	void add(Entity e) {

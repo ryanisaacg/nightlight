@@ -19,12 +19,12 @@ void tick(State state, bool[SDL_Scancode] keys) {
 		entity.speed.y += 0.25f;
 	}
 	//Apply controls
+	state.entities[0].speed.x = 0;
 	if(pressed(SDL_SCANCODE_D))
-		state.player.speed.x = 3;
+		state.entities[0].speed.x = 3;
 	if(pressed(SDL_SCANCODE_A))
-		state.player.speed.x = -3;
+		state.entities[0].speed.x = -3;
 	//Apply physics
-	physics(&state.player);
 	for(int i = 0; i < state.amount; i++) {
 		physics(&(state.entities[i]));
 	}

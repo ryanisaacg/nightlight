@@ -11,10 +11,9 @@ void main() {
     SDL_Texture *block = window.load("img/block.bmp");
     SDL_Texture *player = window.load( "img/player.bmp");
     
-    State state = State(10);
+    State state = State(10, Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player));
     state.tiles = new Tiles();
     state.tiles.put(block, Vector2(100, 100));
-    state.player = Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player);
     state.add(Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player));
     
     

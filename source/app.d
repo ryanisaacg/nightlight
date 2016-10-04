@@ -7,15 +7,22 @@ import entity;
 import logic;
 import io;
 
+private Ini gfx_cfg;
+private Ini game_cfg;
+private GameConfig config;
+
+void load_config() {
+	game_cfg = Ini.Parse("config/gameplay.ini");
+	config.friction = to!float(game_cfg["controls"].getKey("friction"));
+	config.accel = to!float(game_cfg["controls"].getKey("accel"));
+	config.top_speed = to!float(game_cfg["controls"].getKey("top_speed"));
+	config.min_speed = to!float(game_cfg["controls"].getKey("min_speed"));
+	config.gravity = to!float(game_cfg["physics"].getKey("gravity"));
+}
+
 void main() {
-	auto gfx_cfg = Ini.Parse("config/graphics.ini");
-	auto game_cfg = Ini.Parse("config/gameplay.ini");
-	GameConfig config = {
-		friction: to!float(game_cfg["controls"].getKey("friction")), 
-		accel: to!float(game_cfg["controls"].getKey("accel")), 
-		top_speed: to!float(game_cfg["controls"].getKey("top_speed")), 
-		min_speed: to!float(game_cfg["controls"].getKey("min_speed")),
-		gravity: to!float(game_cfg["physics"].getKey("gravity"))};
+	gfx_cfg = Ini.Parse("config/graphics.ini");
+	load_config();
 	auto window_cfg = gfx_cfg["window"]; 
     auto window = Window(window_cfg.getKey("title"), to!int(window_cfg.getKey("width")), 
 		to!int(window_cfg.getKey("height")));

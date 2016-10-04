@@ -4,8 +4,8 @@ import std.conv;
 import std.stdio;
 import std.string;
 
+import app;
 import entity;
-
 
 struct Window {
 	SDL_Window *window;
@@ -49,6 +49,8 @@ struct Window {
 				break;
 			case SDL_KEYDOWN:
 				keys[e.key.keysym.scancode] = true;
+				if(e.key.keysym.scancode == SDL_SCANCODE_F5)
+					load_config();
 				break;
 			case SDL_KEYUP:
 				keys.remove(e.key.keysym.scancode);

@@ -3,7 +3,7 @@ import arcade.tilemap;
 import derelict.sdl2.sdl;
 
 alias Tiles = Tilemap!(SDL_Texture*, 640, 480, 32);
-
+alias IntTiles = Tilemap!(int[], 640, 480, 32);
 
 struct Entity {
 	Rect bounds;

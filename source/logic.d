@@ -9,7 +9,21 @@ struct GameConfig {
 	float friction, accel, top_speed, min_speed, gravity, jump_speed, float_gravity;
 }
 
-void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
+struct AppendData {
+	IntTiles tiles;
+	int index;
+}
+void append_index(int x, int y, AppendData data) {
+	data.tiles.data[x][y] ~= data.index;
+}
+
+void tick(State state, bool[SDL_Scancode] keys, GameConfig config, IntTiles entity_tiles) {
+	//Clear data from tiles
+	for(int i = 0; i < entity_tiles.width; i += 32) {
+		for(int j = 0; j < entity_tiles.height; j += 32) {
+			entity_tiles.get(Vector2(i, j)).length = 0;
+		}
+	}
 	//Define game step routines
 	bool pressed(SDL_Scancode key) {
 		bool *result = key in keys;
@@ -45,6 +59,12 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
 	//Apply physics
 	for(int i = 1; i < state.amount; i++) {
 		physics(&(state.entities[i]));
+	}
+	for(int i = 0; i < state.amount; i++) {
+		entity_tiles.do_region!append_index(state.entities[i].bounds, AppendData(entity_tiles, i));
+	}
+	for(int i = 0; i < state.amount; i++) {
+		//TODO: Check each entity against the entity map and call the collision functions
 	}
 }
 

@@ -37,10 +37,18 @@ void main() {
     state.tiles.put(block, Vector2(100, 100));
     state.add(Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player));
     
+    IntTiles tiles = new IntTiles();
+    for(int i = 0; i < tiles.width; i += 32) {
+		for(int j = 0; j < tiles.height; j += 32) {
+			int[] list = [];
+			tiles.put(list, Vector2(i, j));
+		}
+	}
+    
     int frame_delay = 1000 / to!int(gfx_cfg["perf"].getKey("fps"));
     while(window.stayOpen) {
 		window.checkEvents();
-		tick(state, window.keys, config);
+		tick(state, window.keys, config, tiles);
 		window.draw(state);
 		SDL_Delay(frame_delay);
 	}

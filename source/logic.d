@@ -6,7 +6,7 @@ import std.stdio;
 import entity;
 
 struct GameConfig {
-	float friction, accel, top_speed, min_speed, gravity, jump_speed;
+	float friction, accel, top_speed, min_speed, gravity, jump_speed, float_gravity;
 }
 
 void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
@@ -15,13 +15,13 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
 		bool *result = key in keys;
 		return result !is null;
 	}
-	void physics(Entity *entity) {
+	void physics(Entity *entity, float gravity = config.gravity) {
 		Rect result;
 		Vector2 speed;
 		state.tiles.slide(entity.bounds, entity.speed, result, speed);
 		entity.bounds = result;
 		entity.speed = speed;
-		entity.speed.y += config.gravity;
+		entity.speed.y += gravity;
 	}
 	//Apply controls
 	//Horizontal movement
@@ -35,10 +35,15 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
 	if(abs(player.speed.x) < config.min_speed)
 		player.speed.x = 0;
 	//Jumping
-	if(pressed(SDL_SCANCODE_SPACE) && !state.tiles.is_empty(player.bounds.move(Vector2(0, 1))))
-		player.speed.y = config.jump_speed;
+	float gravity = config.gravity;
+	if(pressed(SDL_SCANCODE_SPACE)) {
+		gravity = config.float_gravity;
+		if(!state.tiles.is_empty(player.bounds.move(Vector2(0, 1)))) 
+			player.speed.y = config.jump_speed;
+	}
+	physics(&(state.entities[0]), gravity);
 	//Apply physics
-	for(int i = 0; i < state.amount; i++) {
+	for(int i = 1; i < state.amount; i++) {
 		physics(&(state.entities[i]));
 	}
 }

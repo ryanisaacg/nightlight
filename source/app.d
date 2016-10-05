@@ -32,10 +32,10 @@ void main() {
     SDL_Texture *block = window.load("img/block.bmp");
     SDL_Texture *player = window.load( "img/player.bmp");
     
-    State state = State(10, Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player));
+    State state = new State(10, Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player, 1, EntityType.CHARACTER, EntityAlign.PLAYER));
     state.tiles = new Tiles();
     state.tiles.put(block, Vector2(100, 100));
-    state.add(Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player));
+    state.add(Entity(Rect(240, 0, 32, 32), Vector2(1, 1), player, 1, EntityType.PROJECTILE, EntityAlign.ENEMY));
     
     IntTiles tiles = new IntTiles();
     for(int i = 0; i < tiles.width; i += 32) {

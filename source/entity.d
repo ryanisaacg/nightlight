@@ -5,14 +5,19 @@ import derelict.sdl2.sdl;
 alias Tiles = Tilemap!(SDL_Texture*, 640, 480, 32);
 alias IntTiles = Tilemap!(int[], 640, 480, 32);
 
+enum EntityType { FIXTURE, CHARACTER, PROJECTILE }
+enum EntityAlign { NEUTRAL, PLAYER, ENEMY }
+
 struct Entity {
 	Rect bounds;
 	Vector2 speed;
 	SDL_Texture *texture = null;
 	int health = 1;
+	EntityType type;
+	EntityAlign faction;
 }
 
-struct State {
+class State {
 	Entity[] entities;
 	int amount = 0;
 	Tiles tiles;

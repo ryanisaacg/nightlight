@@ -101,7 +101,7 @@ struct Window {
 		SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255);
 		SDL_RenderClear(renderer);
 		//Draw the entities
-		foreach(entity; state.entities) draw_entity(entity);
+		for(int i = 0; i < state.amount; i++) draw_entity(state.entities[i]);
 		//Draw the tiles
 		for(int x = 0; x < state.tiles.width; x += 32) {
 			for(int y = 0; y < state.tiles.height; y += 32) {

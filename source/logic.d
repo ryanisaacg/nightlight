@@ -17,6 +17,35 @@ void append_index(int x, int y, AppendData data) {
 	data.tiles.data[x][y] ~= data.index;
 }
 
+struct CollisionData {
+	IntTiles tiles;
+	Entity[] entities;
+	int current;
+}
+void collision_checks(int x, int y, CollisionData data) {
+	int[] possibilities = data.tiles.get(Vector2(x, y));
+	auto entities = data.entities;
+	int current_index = data.current;
+	for(int i = 0; i < possibilities.length; i++) {
+		//Actual collision check
+		if(current_index != possibilities[i] && entities[current_index].bounds.overlaps(entities[possibilities[i]].bounds)) {
+			Entity *current = &(entities[current_index]);
+			Entity *other = &(entities[possibilities[i]]);
+			//Only check projectiles, fixture - character, and character - character, because otherwise checks run twice
+			if(current.faction == other.faction)
+				continue;
+			if(current.type == EntityType.PROJECTILE) {
+				current.health --;
+				other.health --;
+			} else if(current.type == EntityType.FIXTURE && other.type == EntityType.CHARACTER) {
+				other.health --;
+			} else if(current.type == EntityType.CHARACTER && other.type == EntityType.CHARACTER && current.faction == EntityAlign.PLAYER) {
+				current.health --;
+			}
+		}
+	}
+}
+
 void tick(State state, bool[SDL_Scancode] keys, GameConfig config, IntTiles entity_tiles) {
 	//Clear data from tiles
 	for(int i = 0; i < entity_tiles.width; i += 32) {
@@ -64,7 +93,16 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config, IntTiles enti
 		entity_tiles.do_region!append_index(state.entities[i].bounds, AppendData(entity_tiles, i));
 	}
 	for(int i = 0; i < state.amount; i++) {
-		//TODO: Check each entity against the entity map and call the collision functions
+		entity_tiles.do_region!collision_checks(state.entities[i].bounds, CollisionData(entity_tiles, state.entities, i));
+	}
+	int i = 0;
+	while(i < state.amount) {
+		if(state.entities[i].health <= 0) {
+			state.remove(i);
+			if(i == 0)
+				writeln("The player is dead. RIP");
+		} else
+			i++;
 	}
 }
 

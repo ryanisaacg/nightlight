@@ -13,12 +13,14 @@ private GameConfig config;
 
 void load_config() {
 	game_cfg = Ini.Parse("config/gameplay.ini");
+	//Load control config
 	config.friction = to!float(game_cfg["controls"].getKey("friction"));
 	config.accel = to!float(game_cfg["controls"].getKey("accel"));
 	config.top_speed = to!float(game_cfg["controls"].getKey("top_speed"));
 	config.min_speed = to!float(game_cfg["controls"].getKey("min_speed"));
-	config.gravity = to!float(game_cfg["physics"].getKey("gravity"));
 	config.jump_speed = to!float(game_cfg["controls"].getKey("jump_speed"));
+	//Load physics config
+	config.gravity = to!float(game_cfg["physics"].getKey("gravity"));
 	config.float_gravity = to!float(game_cfg["physics"].getKey("float_gravity"));
 }
 

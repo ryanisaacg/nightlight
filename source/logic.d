@@ -89,12 +89,15 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config, IntTiles enti
 	for(int i = 1; i < state.amount; i++) {
 		physics(&(state.entities[i]));
 	}
+	//Place entities into a tiled map
 	for(int i = 0; i < state.amount; i++) {
 		entity_tiles.do_region!append_index(state.entities[i].bounds, AppendData(entity_tiles, i));
 	}
+	//Check for collisions against tiled map
 	for(int i = 0; i < state.amount; i++) {
 		entity_tiles.do_region!collision_checks(state.entities[i].bounds, CollisionData(entity_tiles, state.entities, i));
 	}
+	//Remove dead entities
 	int i = 0;
 	while(i < state.amount) {
 		if(state.entities[i].health <= 0) {

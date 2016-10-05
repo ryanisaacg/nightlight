@@ -6,7 +6,7 @@ import std.stdio;
 import entity;
 
 struct GameConfig {
-	float friction, accel, top_speed, min_speed, gravity;
+	float friction, accel, top_speed, min_speed, gravity, jump_speed;
 }
 
 void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
@@ -24,6 +24,7 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
 		entity.speed.y += config.gravity;
 	}
 	//Apply controls
+	//Horizontal movement
 	Entity *player = &(state.entities[0]);
 	player.speed.x -= sgn(player.speed.x) * config.friction;
 	player.speed.x = fmin(config.top_speed, fmax(-config.top_speed, player.speed.x));
@@ -33,6 +34,9 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config) {
 		player.speed.x -= config.accel;
 	if(abs(player.speed.x) < config.min_speed)
 		player.speed.x = 0;
+	//Jumping
+	if(pressed(SDL_SCANCODE_SPACE) && !state.tiles.is_empty(player.bounds.move(Vector2(0, 1))))
+		player.speed.y = config.jump_speed;
 	//Apply physics
 	for(int i = 0; i < state.amount; i++) {
 		physics(&(state.entities[i]));

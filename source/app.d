@@ -18,6 +18,7 @@ void load_config() {
 	config.top_speed = to!float(game_cfg["controls"].getKey("top_speed"));
 	config.min_speed = to!float(game_cfg["controls"].getKey("min_speed"));
 	config.gravity = to!float(game_cfg["physics"].getKey("gravity"));
+	config.jump_speed = to!float(game_cfg["controls"].getKey("jump_speed"));
 }
 
 void main() {

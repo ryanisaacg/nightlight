@@ -72,7 +72,8 @@ void main() {
 			s ~= *cptr;
 			cptr++;
 		}
-		writeln(s);
+		if(s.length > 0)
+			writeln(s);
 	}
     window.close();
 }

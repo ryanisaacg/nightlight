@@ -1,11 +1,11 @@
 import arcade.geom;
-import multimedia.graphics;
+import multimedia.graphics.*;
 import dini;
 import std.conv;
 
 import entity;
 import logic;
-import io;
+import draw;
 
 private Ini gfx_cfg;
 private Ini game_cfg;
@@ -53,8 +53,8 @@ void main() {
 		while(SDL_PollEvent(&e)) {
 			window.processEvent(e);
 		}
-		tick(state, window.keys, config, tiles);
-		window.draw(state);
+		tick(state, window.keyboard, config, tiles);
+		draw(window, state);
 		SDL_Delay(frame_delay);
 	}
     

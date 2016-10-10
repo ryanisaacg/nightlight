@@ -1,8 +1,8 @@
 import arcade.geom;
 import arcade.tilemap;
-import derelict.sdl2.sdl;
+import multimedia.graphics;
 
-alias Tiles = Tilemap!(SDL_Texture*, 640, 480, 32);
+alias Tiles = Tilemap!(Texture, 640, 480, 32);
 alias IntTiles = Tilemap!(int[], 640, 480, 32);
 
 enum EntityType { FIXTURE, CHARACTER, PROJECTILE }
@@ -11,7 +11,7 @@ enum EntityAlign { NEUTRAL, PLAYER, ENEMY }
 struct Entity {
 	Rect bounds;
 	Vector2 speed;
-	SDL_Texture *texture = null;
+	Texture texture;
 	int health = 1;
 	EntityType type;
 	EntityAlign faction;

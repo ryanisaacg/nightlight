@@ -1,9 +1,11 @@
 import arcade.geom;
+import derelict.sdl2.sdl;
 import dini;
 import multimedia.graphics;
 import multimedia.util;
 import std.conv;
 import std.stdio;
+import std.string;
 import std.typecons;
 
 import entity;
@@ -63,6 +65,14 @@ void main() {
 		tick(state, window.keyboard, config, tiles);
 		drawState(window, state, effectTexture);
 		sleep(frame_delay);
+		//Check for and print errors
+		string s;
+		const(char)* cptr = SDL_GetError();
+		while(*cptr != '\0') {
+			s ~= *cptr;
+			cptr++;
+		}
+		writeln(s);
 	}
     window.close();
 }

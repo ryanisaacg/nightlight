@@ -3,14 +3,12 @@ import multimedia.graphics;
 
 import entity;
 
-Texture effectTex;
-
 void drawState(Window window, State state, Texture effectTexture) {
     Renderer draw = window.draw;
     //Draw the lighting created by the entities
     void lighting_overlay(Entity highlight) {
 		//Set up render state
-        draw.setTarget(effectTex);
+        draw.setTarget(effectTexture);
         draw.mode = BlendMode.None;
         draw.setColor(cast(byte)0, cast(byte)0, cast(byte)0, cast(byte)230);
 		draw.fillRect(0, 0, window.width, window.height);
@@ -28,7 +26,7 @@ void drawState(Window window, State state, Texture effectTexture) {
 		//Draw the effect target over the screen
 		draw.resetTarget();
         draw.mode = BlendMode.Blend;
-        draw.draw(effectTex, 0, 0, window.width, window.height);
+        draw.draw(effectTexture, 0, 0, window.width, window.height);
 	}
     //Draw the window background
     draw.setColor(cast(byte)128, cast(byte)128, cast(byte)128, cast(byte)255);

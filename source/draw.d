@@ -27,7 +27,6 @@ void drawState(Window window, State state) {
             draw.fillRect(cast(int)bounds.x - off, cast(int)bounds.y - off, 
                 cast(int)bounds.width + off * 2, cast(int)bounds.height + off * 2);
         }
-        draw.display();
 		//Draw the effect target over the screen
 		draw.resetTarget();
         draw.mode = BlendMode.Blend;
@@ -50,7 +49,7 @@ void drawState(Window window, State state) {
         }
     }
     //Draw the lighting
-    lighting_overlay(state.entities[0]);
+   // lighting_overlay(state.entities[0]);
     //Finish drawing
     draw.display();
 }

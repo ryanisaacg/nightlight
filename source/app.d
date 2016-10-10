@@ -3,6 +3,7 @@ import dini;
 import multimedia.graphics;
 import multimedia.util;
 import std.conv;
+import std.stdio;
 import std.typecons;
 
 import entity;
@@ -60,5 +61,5 @@ void main() {
 		drawState(window, state);
 		sleep(frame_delay);
 	}
-    
+    window.close();
 }

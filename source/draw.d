@@ -5,9 +5,7 @@ import entity;
 
 Texture effectTex;
 
-void drawState(Window window, State state) {
-    if(effectTex.texture == null) 
-        effectTex = Texture(window.draw, window.width, window.height, true);
+void drawState(Window window, State state, Texture effectTexture) {
     Renderer draw = window.draw;
     //Draw the lighting created by the entities
     void lighting_overlay(Entity highlight) {
@@ -49,7 +47,7 @@ void drawState(Window window, State state) {
         }
     }
     //Draw the lighting
-   // lighting_overlay(state.entities[0]);
+    lighting_overlay(state.entities[0]);
     //Finish drawing
     draw.display();
 }

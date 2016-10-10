@@ -50,6 +50,9 @@ void main() {
 		}
 	}
     
+	Texture effectTexture = Texture(window.draw, window.width, window.height, true);
+	effectTexture.mode = BlendMode.Blend;
+
     int frame_delay = 1000 / to!int(gfx_cfg["perf"].getKey("fps"));
     while(!window.closed) {
 		Nullable!Event e = pollEvent();
@@ -58,7 +61,7 @@ void main() {
 			e = pollEvent();
 		}
 		tick(state, window.keyboard, config, tiles);
-		drawState(window, state);
+		drawState(window, state, effectTexture);
 		sleep(frame_delay);
 	}
     window.close();

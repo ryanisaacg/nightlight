@@ -1,5 +1,5 @@
 import arcade.geom;
-import derelict.sdl2.sdl;
+import multimedia.graphics;
 import dini;
 import std.conv;
 
@@ -31,8 +31,8 @@ void main() {
     auto window = Window(window_cfg.getKey("title"), to!int(window_cfg.getKey("width")), 
 		to!int(window_cfg.getKey("height")));
     
-    SDL_Texture *block = window.load("img/block.bmp");
-    SDL_Texture *player = window.load( "img/player.bmp");
+    Texture block = window.draw.loadTexture("img/block.bmp");
+    Texture player = window.draw.loadTexture( "img/player.bmp");
     
     State state = new State(10, Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player, 1, EntityType.CHARACTER, EntityAlign.PLAYER));
     state.tiles = new Tiles();
@@ -48,8 +48,11 @@ void main() {
 	}
     
     int frame_delay = 1000 / to!int(gfx_cfg["perf"].getKey("fps"));
-    while(window.stayOpen) {
-		window.checkEvents();
+    while(!window.closed) {
+		SDL_Event e;
+		while(SDL_PollEvent(&e)) {
+			window.processEvent(e);
+		}
 		tick(state, window.keys, config, tiles);
 		window.draw(state);
 		SDL_Delay(frame_delay);

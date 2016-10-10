@@ -1,7 +1,9 @@
 import arcade.geom;
-import multimedia.graphics.*;
 import dini;
+import multimedia.graphics;
+import multimedia.util;
 import std.conv;
+import std.typecons;
 
 import entity;
 import logic;
@@ -49,13 +51,14 @@ void main() {
     
     int frame_delay = 1000 / to!int(gfx_cfg["perf"].getKey("fps"));
     while(!window.closed) {
-		SDL_Event e;
-		while(SDL_PollEvent(&e)) {
-			window.processEvent(e);
+		Nullable!Event e = pollEvent();
+		while(!e.isNull) {
+			window.processEvent(e.get());
+			e = pollEvent();
 		}
 		tick(state, window.keyboard, config, tiles);
-		draw(window, state);
-		SDL_Delay(frame_delay);
+		drawState(window, state);
+		sleep(frame_delay);
 	}
     
 }

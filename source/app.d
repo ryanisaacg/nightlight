@@ -1,11 +1,16 @@
 import arcade.geom;
 import derelict.sdl2.sdl;
 import dini;
+import multimedia.graphics;
+import multimedia.util;
 import std.conv;
+import std.stdio;
+import std.string;
+import std.typecons;
 
 import entity;
 import logic;
-import io;
+import draw;
 
 private Ini gfx_cfg;
 private Ini game_cfg;
@@ -13,12 +18,14 @@ private GameConfig config;
 
 void load_config() {
 	game_cfg = Ini.Parse("config/gameplay.ini");
+	//Load control config
 	config.friction = to!float(game_cfg["controls"].getKey("friction"));
 	config.accel = to!float(game_cfg["controls"].getKey("accel"));
 	config.top_speed = to!float(game_cfg["controls"].getKey("top_speed"));
 	config.min_speed = to!float(game_cfg["controls"].getKey("min_speed"));
-	config.gravity = to!float(game_cfg["physics"].getKey("gravity"));
 	config.jump_speed = to!float(game_cfg["controls"].getKey("jump_speed"));
+	//Load physics config
+	config.gravity = to!float(game_cfg["physics"].getKey("gravity"));
 	config.float_gravity = to!float(game_cfg["physics"].getKey("float_gravity"));
 }
 
@@ -29,8 +36,8 @@ void main() {
     auto window = Window(window_cfg.getKey("title"), to!int(window_cfg.getKey("width")), 
 		to!int(window_cfg.getKey("height")));
     
-    SDL_Texture *block = window.load("img/block.bmp");
-    SDL_Texture *player = window.load( "img/player.bmp");
+    Texture block = window.draw.loadTexture("img/block.bmp");
+    Texture player = window.draw.loadTexture( "img/player.bmp");
     
     State state = new State(10, Entity(Rect(0, 0, 32, 32), Vector2(1, 1), player, 1, EntityType.CHARACTER, EntityAlign.PLAYER));
     state.tiles = new Tiles();
@@ -45,12 +52,28 @@ void main() {
 		}
 	}
     
+	Texture effectTexture = Texture(window.draw, window.width, window.height, true);
+	effectTexture.mode = BlendMode.Blend;
+
     int frame_delay = 1000 / to!int(gfx_cfg["perf"].getKey("fps"));
-    while(window.stayOpen) {
-		window.checkEvents();
-		tick(state, window.keys, config, tiles);
-		window.draw(state);
-		SDL_Delay(frame_delay);
+    while(!window.closed) {
+		Nullable!Event e = pollEvent();
+		while(!e.isNull) {
+			window.processEvent(e.get());
+			e = pollEvent();
+		}
+		tick(state, window.keyboard, config, tiles);
+		drawState(window, state, effectTexture);
+		sleep(frame_delay);
+		//Check for and print errors
+		string s;
+		const(char)* cptr = SDL_GetError();
+		while(*cptr != '\0') {
+			s ~= *cptr;
+			cptr++;
+		}
+		if(s.length > 0)
+			writeln(s);
 	}
-    
+    window.close();
 }

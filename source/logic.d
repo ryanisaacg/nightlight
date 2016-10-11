@@ -1,5 +1,5 @@
 import arcade.geom;
-import derelict.sdl2.sdl;
+import multimedia.input;
 import std.math;
 import std.stdio;
 
@@ -46,17 +46,12 @@ void collision_checks(int x, int y, CollisionData data) {
 	}
 }
 
-void tick(State state, bool[SDL_Scancode] keys, GameConfig config, IntTiles entity_tiles) {
+void tick(State state, Keyboard keys, GameConfig config, IntTiles entity_tiles) {
 	//Clear data from tiles
 	for(int i = 0; i < entity_tiles.width; i += 32) {
 		for(int j = 0; j < entity_tiles.height; j += 32) {
 			entity_tiles.get(Vector2(i, j)).length = 0;
 		}
-	}
-	//Define game step routines
-	bool pressed(SDL_Scancode key) {
-		bool *result = key in keys;
-		return result !is null;
 	}
 	void physics(Entity *entity, float gravity = config.gravity) {
 		Rect result;
@@ -71,15 +66,15 @@ void tick(State state, bool[SDL_Scancode] keys, GameConfig config, IntTiles enti
 	Entity *player = &(state.entities[0]);
 	player.speed.x -= sgn(player.speed.x) * config.friction;
 	player.speed.x = fmin(config.top_speed, fmax(-config.top_speed, player.speed.x));
-	if(pressed(SDL_SCANCODE_D))
+	if(keys.isPressed!"D")
 		player.speed.x += config.accel;
-	if(pressed(SDL_SCANCODE_A))
+	if(keys.isPressed!"A")
 		player.speed.x -= config.accel;
 	if(abs(player.speed.x) < config.min_speed)
 		player.speed.x = 0;
 	//Jumping
 	float gravity = config.gravity;
-	if(pressed(SDL_SCANCODE_SPACE)) {
+	if(keys.isPressed!"Space") {
 		gravity = config.float_gravity;
 		if(!state.tiles.is_empty(player.bounds.move(Vector2(0, 1)))) 
 			player.speed.y = config.jump_speed;
